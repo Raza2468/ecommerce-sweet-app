@@ -22,13 +22,13 @@ var server = http.createServer(appxml);
 // var io = socketIo(server, { cors: { origin: "*", methods: "*", } });
 
 var io = socketIo(server, {
-    cors: ["http://localhost:3000", 'https://ecommerce-sweet-app.herokuapp.com/']
+    cors: ["http://localhost:3000",'https://`ecommerce-sweet-app`.herokuapp.com/']
 });
 
 appxml.use(bodyParser.json());
 appxml.use(cookieParser());
 appxml.use(cors({
-    origin: ["http://localhost:3000", 'https://ecommerce-sweet-app.herokuapp.com/'],
+    origin: ["http://localhost:3000",'https://ecommerce-sweet-app.herokuapp.com/'],
     // origin: '*',
     credentials: true
 }));

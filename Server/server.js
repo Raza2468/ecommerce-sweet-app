@@ -21,14 +21,14 @@ let appxml = express()
 var server = http.createServer(appxml);
 
 var io = socketIo(server, {
-    cors: ["http://localhost:3000",'https://sweet-website.herokuapp.com']
+    cors: ["http://localhost:3000",'https://ecommerce-sweet-app.herokuapp.com']
 });
 
 appxml.use(morgan('dev'));
 appxml.use(bodyParser.json());
 
 appxml.use(cors({
-    origin: ["http://localhost:3000",'https://sweet-website.herokuapp.com'],
+    origin: ["http://localhost:3000",'https://ecommerce-sweet-app.herokuapp.com'],
     credentials: true
 }));
 

@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
+var {DBURI} = require("../core/index")
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // let dbURI = "mongodb+srv://dbuser:dbpassword@cluster0.9qvbs.mongodb.net/abc-database";
-let dbURI = "mongodb+srv://faiz:2468@mundodb.lkd4g.mongodb.net/ttest?retryWrites=true&w=majority";
+let dbURI = DBURI;
 // let dbURI = 'mongodb://localhost:27017/abc-database';
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
 

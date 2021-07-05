@@ -1,38 +1,41 @@
-
 var express = require("express");
-var bodyParser = require('body-parser');
-var cookieParser = require('cookie-parser');
-var cors = require("cors");
 var morgan = require("morgan");
+var bodyParser = require('body-parser');
+var cors = require("cors");
+var bcrypt = require("bcrypt-inzi");
 var jwt = require('jsonwebtoken'); // https://github.com/auth0/node-jsonwebtoken
 //is JWT secure? https://stackoverflow.com/questions/27301557/if-you-can-decode-jwt-how-are-they-secure
+var cookieParser = require('cookie-parser');
 var path = require("path")
 var authRoutes = require("./routes/auth");
-var { ServerSecretKey } = require("./core/index")
-var socketIo = require("socket.io");
 var http = require("http");
+var { ServerSecretKey , PORT} = require("./core/index")
+// var { SERVER_SECRET , PORT } = require("./core/index");
+
+var socketIo = require("socket.io");
 var { getUser, tweet, order, userProduct } = require("./dberor/models")
 // var serviceaccount = require("./firebase/firebase.json")
-var ServerSecretKey = process.env.SECRET || "123";
 
 
 let appxml = express()
-
 var server = http.createServer(appxml);
-// var io = socketIo(server, { cors: { origin: "*", methods: "*", } });
 
 var io = socketIo(server, {
-    cors: ["http://localhost:3000",'https://`ecommerce-sweet-app`.herokuapp.com/']
+    cors: ["http://localhost:3000",'https://sweet-website.herokuapp.com']
 });
 
+appxml.use(morgan('dev'));
 appxml.use(bodyParser.json());
-appxml.use(cookieParser());
+
 appxml.use(cors({
-    origin: ["http://localhost:3000",'https://ecommerce-sweet-app.herokuapp.com/'],
-    // origin: '*',
+    origin: ["http://localhost:3000",'https://sweet-website.herokuapp.com'],
     credentials: true
 }));
-appxml.use(morgan('dev'));
+
+appxml.use(cookieParser());
+appxml.use("/auth", authRoutes)
+appxml.use("/", express.static(path.resolve(path.join(__dirname, "../build"))));
+
 
 
 // Firebase bucket
@@ -70,10 +73,8 @@ const bucket = admin.storage().bucket("gs://firestore-28544.appspot.com");
 // appxml.use(cors());
 // appxml.use(bodyParser.urlencoded({ extended: true }));
 
-appxml.use("/", express.static(path.resolve(path.join(__dirname, "../build"))));
 
 // =========================>
-appxml.use("/auth", authRoutes)
 
 
 // =========================>
@@ -479,7 +480,7 @@ appxml.post("/order", upload.any(), (req, res, next) => {
 })
 
 io.on("connection", function (socket) {
-    console.log("co");
+    console.log("socket connection");
     // socket.on("new-operations", function(data) {
     //   io.emit("new-remote-operations", data);
     // });
@@ -645,7 +646,7 @@ appxml.get('/AllDataStatusOrderCancel', (req, res, next) => {
 
 
 // ==========================================>Server /////
-var PORT = process.env.PORT || 3001
+// var PORT = process.env.PORT || 3001
 
 
 
